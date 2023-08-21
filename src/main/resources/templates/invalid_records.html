@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invalid Records</title>
+</head>
+<script lang="javascript">
+    function callRestApi(job) {
+        const request = new XMLHttpRequest();
+        const url = 'http://localhost:8080/jobs/' + job;
+        request.open("GET", url);
+        request.send();
+
+        request.onload = (e) => {
+            alert(request.response);
+            location.reload();
+        }
+    }
+</script>
+<body>
+    <button onclick="callRestApi('startCsvBatch')">Start CSV Batch</button>
+    <button onclick="callRestApi('startXmlBatch')">Start XML Batch</button>
+    <h2>Invalid Records</h2>
+    <div th:if="${ not#lists.isEmpty(invalidRecords)}">
+        <table>
+            <tr>
+                <th>Reference</th>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Start Balace</th>
+                <th>Mutation</th>
+                <th>End Balance</th>
+                <th>Reason</th>
+            </tr>
+            <tr th:each="record : ${invalidRecords}">
+                <td th:text="${record.reference}"></td>
+                <td th:text="${record.accountNumber}"></td>
+                <td th:text="${record.description}"></td>
+                <td th:text="${record.startBalance}"></td>
+                <td th:text="${record.mutation}"></td>
+                <td th:text="${record.endBalance}"></td>
+                <td th:text="${record.reason}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
